@@ -196,7 +196,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- NeoTree
 vim.keymap.set('n', '<leader>t', '<cmd>Neotree toggle<cr>', { desc = 'Toggle Explorer' })
-vim.keymap.set('n', '<leader>o', function()
+vim.keymap.set('n', '<leader>0', function()
   if vim.bo.filetype == 'neo-tree' then
     vim.cmd.wincmd 'p'
   else
@@ -464,11 +464,20 @@ require('lazy').setup {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       }
+      local lspconfig = require 'lspconfig'
+      lspconfig.rust_analyzer.setup {}
+      lspconfig.pyright.setup {}
+      lspconfig.rustaceanvim.setup {}
+      -- lspconfig.ruff.setup {}
+      lspconfig.ruff_lsp.setup {}
+      lspconfig.tailwindcss.setup {}
+      lspconfig.biome.setup {}
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
+
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
           -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -575,6 +584,20 @@ require('lazy').setup {
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+        -- pyright = {
+        --   settings = {
+        --     pyright = {
+        --       -- Using Ruff's import organizer
+        --       disableOrganizeImports = true,
+        --     },
+        --     python = {
+        --       analysis = {
+        --         -- Ignore all files for analysis to exclusively use Ruff for linting
+        --         ignore = { '*' },
+        --       },
+        --     },
+        --   },
+        -- },
 
         lua_ls = {
           -- cmd = {...},
