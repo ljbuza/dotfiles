@@ -11,6 +11,7 @@ return {
     opts = {
       vim.keymap.set('n', '<A-,>', '<Cmd>BufferPrevious<CR>', { desc = 'Previous buffer' }),
       vim.keymap.set('n', '<A-.>', '<Cmd>BufferNext<CR>', { desc = 'Next buffer' }),
+      vim.keymap.set('n', '<A-c>', '<Cmd>BufferClose<CR>', { desc = 'Close buffer' }),
       -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
       -- animation = true,
       -- insert_at_start = true,

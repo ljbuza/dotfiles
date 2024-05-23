@@ -14,6 +14,9 @@ return {
       popup_border_style = 'rounded',
       enable_git_status = true,
       use_libuv_file_watcher = true,
+      view = {
+        adaptive_size = true,
+      },
     }
   end,
   -- opts = {

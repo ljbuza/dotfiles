@@ -467,8 +467,8 @@ require('lazy').setup {
       local lspconfig = require 'lspconfig'
       lspconfig.rust_analyzer.setup {}
       lspconfig.pyright.setup {}
-      lspconfig.rustaceanvim.setup {}
-      -- lspconfig.ruff.setup {}
+      -- lspconfig.rustaceanvim.setup {}
+      lspconfig.ruff.setup {}
       lspconfig.ruff_lsp.setup {}
       lspconfig.tailwindcss.setup {}
       lspconfig.biome.setup {}
