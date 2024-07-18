@@ -1,0 +1,17 @@
+# ignore user specific 
+hyprland.conf
+themes/apatheia/scripts/swaypaper
+hyprland.conf
+scripts/variables/temp/primary_screen
+scripts/extra/storage/dict_searches.txt
+store/latest_notif
+scripts/variables/temp/background
+themes/winter
+themes/pokemon
+themes/windows
+themes/detox
+hypr.conf
+monitors
+keybinds/key-maps.conf
+assets/screenshots/minimalRiceShowcase.mp4
+monitors.conf
