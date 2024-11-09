@@ -1,0 +1,31 @@
+// vim: ft=jsonc
+{
+  "reload_style_on_change": true,
+  "layer": "top",
+  "position": "top",
+  "margin": 0,
+  "include": [
+    "~/.config/waybar/modules.json"
+  ],
+  "modules-left": [
+    "custom/linux",
+    "cpu",
+    "memory",
+    "temperature"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "gamemode",
+    "custom/ss",
+    "custom/weather",
+    "bluetooth",
+    "pulseaudio",
+    "network#wifi",
+    "network#ethernet",
+    "clock",
+    "custom/notification",
+    "custom/power"
+  ]
+}
