@@ -40,6 +40,12 @@ return {
     priority = 1000,
     opts = {},
   },
+  --   vim.cmd [[
+  --   highlight Normal guibg=none
+  --   highlight NonText guibg=none
+  --   highlight Normal ctermbg=none
+  --   highlight NonText ctermbg=none
+  -- ]],
   -- {
   --   'sainnhe/gruvbox-material',
   --   name = 'gruvbox-material',
