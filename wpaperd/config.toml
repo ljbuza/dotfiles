@@ -1,0 +1,10 @@
+[default]
+duration = "30m"
+mode = "stretch"
+sorting = "ascending"
+
+[any]
+path = "/home/larry/Pictures/wallpapers"
+
+[DP-3]
+path = "/home/larry/Pictures/wallpapers"
