@@ -18,6 +18,8 @@
 !wlogout
 !wofi
 !zellij
+!zsh
+!zshrc
 !starship.toml
 !.gitignore
 !README.md
