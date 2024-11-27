@@ -2,12 +2,14 @@
 
 !ags
 !alacritty
+!.codeium
 !hypr
 !hyde
 !kitty
 !k9s
 !nvim
 !nwg-look
+!.oh-my-zsh
 !rofi
 !swaylock
 !swaync
@@ -18,8 +20,8 @@
 !wlogout
 !wofi
 !zellij
-!zsh
-!zshrc
+!.zsh
+!.zshrc
 !starship.toml
 !.gitignore
 !README.md
