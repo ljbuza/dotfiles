@@ -6,13 +6,13 @@ from signal import SIGINT, SIGTERM, signal
 from threading import Event
 import setproctitle
 
-from pywayland.client.display import Display
-from pywayland.protocol.idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1 import (
+from pywayland.client.display import Display  # type: ignore
+from pywayland.protocol.idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1 import (  # type: ignore
     ZwpIdleInhibitManagerV1,
 )
-from pywayland.protocol.wayland.wl_compositor import WlCompositor
-from pywayland.protocol.wayland.wl_registry import WlRegistryProxy
-from pywayland.protocol.wayland.wl_surface import WlSurface
+from pywayland.protocol.wayland.wl_compositor import WlCompositor  # type: ignore
+from pywayland.protocol.wayland.wl_registry import WlRegistryProxy  # type: ignore
+from pywayland.protocol.wayland.wl_surface import WlSurface  # type: ignore
 
 
 @dataclass

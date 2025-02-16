@@ -1,19 +1,11 @@
-[font]
-normal = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
-bold = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold" }
-italic = { family = "CaskaydiaCove Nerd Font Mono", style = "Italic" }
-bold_italic = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold Italic" }
-size = 9.0
-
+[general]
+import = ["~/.cache/material/alacritty.toml"]
 [window]
-opacity = 0.65
 blur = true
 
-[selection]
-save_to_clipboard = true
-
-[general]
-import = [
-    "alacritty_kanagawa.yml",
-]
-
+[font]
+normal = { family = "FantasqueSansMNerdFont Mono", style = "Regular" }
+bold = { family = "FantasqueSansMNerdFont Mono", style = "Bold" }
+italic = { family = "FantasqueSansMNerdFont Mono", style = "Italic" }
+bold_italic = { family = "FantasqueSansMNerdFont Mono", style = "Bold Italic" }
+size = 12
