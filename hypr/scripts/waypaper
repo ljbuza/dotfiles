@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+# Update terminal colors with Pywal
+wal -i "$1"
+
+swaync-client -rs "$1"
+ 
+python3 /home/larry/.config/hypr/scripts/parse_css_to_hyprland.py  "$1"
+
+/home/larry/.config/hypr/scripts/generate_rofi_config.sh "$1"
+
+pywalfox update
+
+wal-telegram -r
+
+
+# Reload your terminal configuration to apply the new colors
+kitty @ set-colors --all /home/larry/.cache/wal/colors-kitty.conf
+
+#!/usr/bin/bash
+
+# Define the Rofi wallpaper path
+ROFI_WALLPAPER_PATH="/home/larry/.config/rofi/launchers/type-6/current-wallpaper.png"
+
+# Remove the old current wallpaper if it exists
+if [ -e "$ROFI_WALLPAPER_PATH" ]; then
+    rm "$ROFI_WALLPAPER_PATH"
+fi
+
+# Copy the new wallpaper to the Rofi configuration directory
+cp "$1" "$ROFI_WALLPAPER_PATH"
+
+# Verify the symbolic link if needed
+if [ ! -L "$ROFI_WALLPAPER_PATH" ]; then
+    echo "Failed to create the symbolic link for the wallpaper."
+    exit 1
+fi
+
+echo "Rofi wallpaper updated successfully."
