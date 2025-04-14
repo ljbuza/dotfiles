@@ -7,10 +7,31 @@
             "mpv": "🎵"
         },
         "status-icons": {
-            "paused": ""
+            "paused": "⏸"
         },
         // "ignored-players": ["firefox"]
         "max-length": 1000,
         "interval": 1
     },
 
+
+
+    /* Version 2 */ 
+
+
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "interval": 1,
+        "dynamic-len": 3200,
+        "max-length": 36,
+        "player-icons": {
+          "chromium": "",
+          "firefox": "󰈹",
+          "spotify": " "
+        },
+        "dynamic-order": [
+          "title",
+          "artist"
+        ],
+        "ignored-players": []
+      },

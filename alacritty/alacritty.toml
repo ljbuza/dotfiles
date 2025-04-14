@@ -1,5 +1,7 @@
 [general]
-import = ["~/.cache/material/alacritty.toml"]
+# import = ["~/.cache/material/alacritty.toml"]
+# import = ["everforest-dark-hard.toml"]
+import = ["gruvbox-material.toml"]
 [window]
 blur = true
 

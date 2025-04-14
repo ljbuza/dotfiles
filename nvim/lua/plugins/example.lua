@@ -1,6 +1,9 @@
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
-if true then return {} end
+--
+if true then
+  return {}
+end
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --
@@ -9,9 +12,14 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
+  require("cmp").setup({
+    formatting = {
+      format = require("nvim-highlight-colors").format,
+    },
+  }),
+
   -- add gruvbox
   { "ellisonleao/gruvbox.nvim" },
-
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
@@ -19,7 +27,6 @@ return {
       colorscheme = "gruvbox",
     },
   },
-
   -- change trouble config
   {
     "folke/trouble.nvim",
@@ -71,7 +78,19 @@ return {
       ---@type lspconfig.options
       servers = {
         -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
+        pyright = {
+          settings = {
+            pyright = {
+              disableOrganizeImports = true, -- Using Ruff
+            },
+            python = {
+              analysis = {
+                ignore = { "*" }, -- Using Ruff
+                typeCheckingMode = "off", -- Using mypy
+              },
+            },
+          },
+        },
       },
     },
   },
