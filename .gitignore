@@ -13,6 +13,7 @@
 !rofi
 !swaylock
 !swaync
+!swww
 !wal
 !waybar
 !waypaper
@@ -20,8 +21,6 @@
 !wlogout
 !wofi
 !zellij
-!.zsh
-!.zshrc
 !starship.toml
 !.gitignore
 !README.md
