@@ -1,41 +1,41 @@
 return {
-  -- {
-  --   "ribru17/bamboo.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     require("bamboo").setup({})
-  --     require("bamboo").load()
-  --   end,
-  -- },
-  -- {
-  --   "rebelot/kanagawa.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     require("kanagawa").setup({})
-  --     require("kanagawa").load()
-  --   end,
-  -- },
-  -- {
-  --   "AlexvZyl/nordic.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     require("nordic").setup({})
-  --   end,
-  -- },
-  -- {
-  --   "neanias/everforest-nvim",
-  --   name = "everforest",
-  --   version = false,
-  --   lazy = false,
-  --   priority = 1000, -- make sure to load this before all the other start plugins
-  --   config = function()
-  --     require("everforest").setup({})
-  --     require("everforest").load()
-  --   end,
-  -- },
+  {
+    "ribru17/bamboo.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("bamboo").setup({})
+      require("bamboo").load()
+    end,
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("kanagawa").setup({})
+      require("kanagawa").load()
+    end,
+  },
+  {
+    "AlexvZyl/nordic.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("nordic").setup({})
+    end,
+  },
+  {
+    "neanias/everforest-nvim",
+    name = "everforest",
+    version = false,
+    lazy = false,
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require("everforest").setup({})
+      require("everforest").load()
+    end,
+  },
   {
     "everviolet/nvim",
     name = "evergarden",
@@ -59,11 +59,12 @@ return {
       },
     },
   },
+  { "EdenEast/nightfox.nvim" }, -- duskfox terafox nordfox
   -- { "ellisonleao/gruvbox.nvim" },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "evergarden",
+      colorscheme = "nightfox",
     },
   },
 }

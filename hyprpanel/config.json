@@ -2,9 +2,9 @@
   "bar.customModules.updates.pollingInterval": 1440000,
   "theme.font.name": "Product Sans",
   "theme.font.label": "Product Sans",
-  "theme.font.size": "1.1rem",
+  "theme.font.size": "1.0rem",
   "theme.bar.buttons.enableBorders": false,
-  "bar.launcher.autoDetectIcon": false,
+  "bar.launcher.autoDetectIcon": true,
   "bar.workspaces.show_numbered": false,
   "bar.network.truncation": false,
   "bar.battery.label": false,
@@ -16,14 +16,13 @@
         "windowtitle"
       ],
       "middle": [
-        "media"
+        "clock"
       ],
       "right": [
         "volume",
         "network",
         "bluetooth",
         "systray",
-        "clock",
         "notifications",
         "power"
       ]
@@ -62,14 +61,14 @@
   "menus.clock.time.hideSeconds": true,
   "menus.clock.weather.location": "53528",
   "menus.clock.weather.key": "0e69872de6ea4260a9d221033242109",
-  "theme.bar.menus.monochrome": true,
-  "wallpaper.pywal": true,
+  "theme.bar.menus.monochrome": false,
+  "wallpaper.pywal": false,
   "wallpaper.enable": false,
   "theme.bar.transparent": false,
   "theme.bar.opacity": 90,
-  "theme.bar.buttons.monochrome": true,
-  "theme.matugen": false,
-  "wallpaper.image": "/home/larry/Pictures/wallpapers/342479.png",
+  "theme.bar.buttons.monochrome": false,
+  "theme.matugen": true,
+  "wallpaper.image": "/home/larry/Pictures/wallpapers/deep-forest-aesthetic-desktop-wallpaper-4k.jpg",
   "menus.dashboard.shortcuts.left.shortcut1.icon": "󰈹",
   "menus.dashboard.shortcuts.left.shortcut1.command": "firefox",
   "menus.dashboard.shortcuts.left.shortcut1.tooltip": "Firefox",
@@ -98,5 +97,12 @@
   "menus.dashboard.directories.right.directory3.label": "󱂵  Home",
   "theme.bar.buttons.workspaces.active": "#63ccc4",
   "theme.bar.buttons.workspaces.occupied": "#deddda",
-  "menus.dashboard.powermenu.avatar.image": "/home/larry/Pictures/coffee.png"
+  "menus.dashboard.powermenu.avatar.image": "/home/larry/Pictures/coffee.png",
+  "bar.customModules.storage.paths": [
+    "/"
+  ],
+  "theme.matugen_settings.variation": "standard_1",
+  "menus.media.displayTimeTooltip": false,
+  "menus.media.hideAlbum": true,
+  "menus.media.hideAuthor": true
 }

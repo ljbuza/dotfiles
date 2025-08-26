@@ -25,6 +25,8 @@ set_wallpaper_hyprland() {
   local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/swww/wallpapers"
   local filename = $(basename "$BG")
 
+  sed -i "s|\"wallpaper.image\": \".*\"|\"wallpaper.image\": \"${BG}\"|" /home/larry/.config/hyprpanel/config.json
+
   # Create cache directory if it doesn't exist
   mkdir -p "$cache_dir"
 
