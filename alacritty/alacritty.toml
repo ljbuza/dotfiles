@@ -1,13 +1,21 @@
-[general]
-# import = ["~/.cache/material/alacritty.toml"]
-# import = ["everforest-dark-hard.toml"]
-import = ["gruvbox-material.toml"]
-[window]
-blur = true
+general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
+
+[env]
+TERM = "xterm-256color"
 
 [font]
-normal = { family = "FantasqueSansMNerdFont Mono", style = "Regular" }
-bold = { family = "FantasqueSansMNerdFont Mono", style = "Bold" }
-italic = { family = "FantasqueSansMNerdFont Mono", style = "Italic" }
-bold_italic = { family = "FantasqueSansMNerdFont Mono", style = "Bold Italic" }
-size = 12
+normal = { family = "Caskaydia Cove Nerd Font Mono" }
+bold = { family = "Caskaydia Cove Nerd Font Mono" }
+italic = { family = "Caskaydia Cove Nerd Font Mono" }
+size = 9
+
+[window]
+ padding.x = 14
+# padding.y = 14
+decorations = "None"
+opacity = 0.98
+
+[keyboard]
+bindings = [
+{ key = "F11", action = "ToggleFullscreen" }
+]

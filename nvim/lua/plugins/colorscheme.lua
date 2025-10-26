@@ -1,3 +1,5 @@
+local manager = require("config.colorscheme_manager")
+
 return {
   {
     "ribru17/bamboo.nvim",
@@ -5,7 +7,6 @@ return {
     priority = 1000,
     config = function()
       require("bamboo").setup({})
-      require("bamboo").load()
     end,
   },
   {
@@ -14,7 +15,6 @@ return {
     priority = 1000,
     config = function()
       require("kanagawa").setup({})
-      require("kanagawa").load()
     end,
   },
   {
@@ -30,17 +30,15 @@ return {
     name = "everforest",
     version = false,
     lazy = false,
-    priority = 1000, -- make sure to load this before all the other start plugins
+    priority = 1000,
     config = function()
       require("everforest").setup({})
-      require("everforest").load()
     end,
   },
   {
     "everviolet/nvim",
     name = "evergarden",
-    --   lazy = false,
-    priority = 1000, -- Colorscheme plugin is loaded first before any other plugins
+    priority = 1000,
     opts = {
       theme = {
         variant = "fall", -- 'winter'|'fall'|'spring'|'summer'
@@ -63,8 +61,17 @@ return {
   -- { "ellisonleao/gruvbox.nvim" },
   {
     "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "nightfox",
-    },
+    opts = function()
+      -- Initialize colorscheme manager to save user selections
+      manager.setup()
+      
+      -- Get saved preference or use default
+      local saved_scheme = manager.load_preference()
+      local colorscheme = saved_scheme or "nightfox" -- Default if no preference is saved
+      
+      return {
+        colorscheme = colorscheme,
+      }
+    end,
   },
 }
