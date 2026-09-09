@@ -4,7 +4,7 @@ This repository captures the portable parts of the current Arch Linux workstatio
 
 Machine-local state, display layouts, histories, credentials, API keys, and work-specific paths are intentionally excluded. Portable replacements that must not overwrite the source workstation's live files are kept under `portable/`.
 
-## New laptop
+## New laptop: Arch Linux
 
 Start from an installed, network-connected Arch Linux system and log in as your normal user. Install Git, clone this repository somewhere other than `~/.config`, then run the bootstrap:
 
@@ -38,6 +38,63 @@ After it completes:
 3. Run `dms doctor` and address any hardware-specific recommendations.
 4. Open Neovim once and allow Lazy.nvim to install the plugins pinned in `nvim/lazy-lock.json`.
 5. Put laptop-only or work-only shell settings in `~/.config/zsh/local.zsh`.
+
+## New laptop: Ubuntu
+
+For the complete Hyprland + DMS desktop, use Ubuntu 26.04 LTS or newer. DMS's
+official Ubuntu packages currently require 26.04+, while the configuration-only
+part of the bootstrap can be used on older Ubuntu releases with `--link-only`.
+
+Start from an installed, network-connected Ubuntu system and run:
+
+```bash
+sudo apt update
+sudo apt install -y git build-essential
+git clone git@github.com:ljbuza/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./bootstrap/install-ubuntu.sh
+```
+
+If GitHub SSH is not configured yet:
+
+```bash
+git clone https://github.com/ljbuza/dotfiles.git ~/.dotfiles
+```
+
+The Ubuntu bootstrap enables `universe`, adds the official DMS Launchpad PPAs,
+installs the available Ubuntu package set, installs Codex with OpenAI's official
+Linux installer, backs up conflicting configuration, and links the same desktop,
+Neovim, Zsh, and terminal configuration used on Arch. Optional packages that are
+not published for the installed Ubuntu release are reported and skipped.
+
+Useful modes:
+
+```bash
+./bootstrap/install-ubuntu.sh --packages-only
+./bootstrap/install-ubuntu.sh --link-only
+./bootstrap/install-ubuntu.sh --skip-codex
+./bootstrap/install-ubuntu.sh --dry-run
+```
+
+The ChatGPT desktop app is installed separately because its package depends on
+the laptop architecture. Download the official Ubuntu `.deb` from
+<https://learn.chatgpt.com/docs/linux/linux-app>, then run one of:
+
+```bash
+sudo apt install ~/Downloads/chatgpt_amd64.deb   # x86_64
+sudo apt install ~/Downloads/chatgpt_arm64.deb   # ARM64
+```
+
+Then finish exactly as on Arch:
+
+```bash
+chsh -s /usr/bin/zsh
+dms doctor
+```
+
+Log out, select Hyprland at the login screen, and log back in. Without a display
+manager, start it from a TTY with `uwsm start hyprland.desktop`. Open Neovim once
+afterward so Lazy.nvim can install the pinned plugins.
 
 ## Codex and ChatGPT
 
@@ -95,5 +152,7 @@ The bootstrap reads:
 
 - `bootstrap/packages-arch.txt` for official Arch packages
 - `bootstrap/packages-aur.txt` for AUR packages
+- `bootstrap/packages-ubuntu.txt` for required Ubuntu packages
+- `bootstrap/packages-ubuntu-optional.txt` for release-dependent Ubuntu packages
 
 Keep these lists curated. They describe the workstation experience, not every package installed on the source machine.

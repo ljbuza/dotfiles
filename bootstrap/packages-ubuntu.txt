@@ -1,0 +1,49 @@
+# Repository and build tools
+software-properties-common
+ca-certificates
+curl
+git
+build-essential
+
+# Hyprland + DankMaterialShell
+dms
+hyprland
+ghostty
+uwsm
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+xwayland
+
+# Desktop services
+network-manager
+bluez
+pipewire
+pipewire-audio
+wireplumber
+gnome-keyring
+mate-polkit
+libnotify-bin
+
+# Wayland utilities
+brightnessctl
+playerctl
+wl-clipboard
+cliphist
+grim
+slurp
+hyprlock
+
+# Editor and shell tools
+neovim
+zsh
+fzf
+bat
+ripgrep
+fd-find
+jq
+rsync
+
+# Fonts
+fonts-noto-core
+fonts-firacode

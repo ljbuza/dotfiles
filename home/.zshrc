@@ -14,7 +14,11 @@ zinit light zsh-users/zsh-history-substring-search
 zinit light Aloxaf/fzf-tab
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
+if [[ -r /etc/arch-release ]]; then
+  zinit snippet OMZP::archlinux
+elif [[ -r /etc/os-release ]] && grep -q '^ID=ubuntu' /etc/os-release; then
+  zinit snippet OMZP::ubuntu
+fi
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::pip
 

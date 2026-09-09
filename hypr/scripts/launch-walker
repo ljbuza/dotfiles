@@ -1,7 +1,13 @@
 #!/bin/bash
 
+# Walker is not packaged on every supported distribution. DMS Spotlight gives
+# us a native launcher fallback while preserving Walker on Arch.
+if ! command -v walker >/dev/null 2>&1; then
+  exec dms ipc call spotlight toggle
+fi
+
 # Ensure elephant is running before launching walker
-if ! pgrep -x elephant > /dev/null; then
+if command -v elephant >/dev/null 2>&1 && ! pgrep -x elephant > /dev/null; then
   setsid uwsm-app -- elephant &
 fi
 

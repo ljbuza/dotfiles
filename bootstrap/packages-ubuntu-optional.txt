@@ -1,0 +1,16 @@
+# The installer checks these after enabling the Ubuntu and DMS repositories.
+# Missing packages are reported without aborting the bootstrap.
+hypridle
+hyprpaper
+hyprpicker
+remind
+imagemagick
+kitty
+alacritty
+starship
+zoxide
+eza
+lazygit
+walker
+elephant
+fonts-cascadia-code
