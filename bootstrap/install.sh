@@ -149,6 +149,8 @@ fi
 
 printf '\nBootstrap complete.\n'
 printf 'Next: select Hyprland at login, run `dms doctor`, and open Neovim once.\n'
+printf 'For Codex, run `codex` in Ghostty and choose Sign in with ChatGPT.\n'
+printf 'Launch the ChatGPT desktop app from DMS or run `chatgpt`.\n'
 if [[ "${SHELL:-}" != */zsh ]]; then
   printf 'Optional: set Zsh as your login shell with `chsh -s /usr/bin/zsh`.\n'
 fi

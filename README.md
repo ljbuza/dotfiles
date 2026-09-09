@@ -39,6 +39,34 @@ After it completes:
 4. Open Neovim once and allow Lazy.nvim to install the plugins pinned in `nvim/lazy-lock.json`.
 5. Put laptop-only or work-only shell settings in `~/.config/zsh/local.zsh`.
 
+## Codex and ChatGPT
+
+The package manifests install:
+
+- `openai-codex` from the official Arch repositories for terminal use in Ghostty
+- `chatgpt-desktop-bin` from the AUR for the ChatGPT desktop app
+
+After bootstrapping, open a project in Ghostty and sign in:
+
+```bash
+cd ~/Documents/work/your-project
+codex
+```
+
+Choose **Sign in with ChatGPT** on the first run. Launch the desktop app through the DMS application launcher or with:
+
+```bash
+chatgpt
+```
+
+OpenAI currently describes the Linux desktop app as a preview supported on selected Ubuntu, Debian, and Fedora releases. Arch is not formally supported, and `chatgpt-desktop-bin` is community AUR packaging of the Linux application. If the bootstrap skips AUR packages because `yay` or `paru` is unavailable, install an AUR helper and run:
+
+```bash
+yay -S --needed chatgpt-desktop-bin walker elephant
+```
+
+Do not copy `~/.codex/auth.json` between computers. Sign in normally on the laptop. Codex authentication, histories, databases, installation IDs, and other generated `~/.codex` state are deliberately excluded from this repository.
+
 ## DMS settings
 
 `DankMaterialShell/settings.portable.json` retains the desktop appearance and behavior while removing display profiles, GPU identifiers, usage histories, absolute wallpaper paths, and authentication material. On first bootstrap it becomes `~/.config/DankMaterialShell/settings.json`. Existing DMS settings are preserved.

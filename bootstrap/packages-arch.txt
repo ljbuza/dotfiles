@@ -44,6 +44,7 @@ alacritty
 neovim
 zsh
 starship
+openai-codex
 fzf
 zoxide
 eza

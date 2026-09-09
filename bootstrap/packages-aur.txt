@@ -2,3 +2,4 @@
 # or paru is already available; otherwise it prints the manual command.
 walker
 elephant
+chatgpt-desktop-bin
