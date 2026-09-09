@@ -1,8 +1,8 @@
-@define-color text            @foreground;
-@define-color background-alt  @color1;
-@define-color selected        @color3;
-@define-color hover           @color5;
-@define-color urgent          @color2;
+@define-color text            @on_surface;
+@define-color background-alt  @primary_container;
+@define-color selected        @primary;
+@define-color hover           @secondary_container;
+@define-color urgent          @error;
 
 * {
 
@@ -28,7 +28,7 @@
 }
 
 .floating-notifications.background .notification-row .notification-background {
-  background: alpha(@background, .55);
+  background-color: @surface_container_high;
   box-shadow: 0 0 8px 0 rgba(0,0,0,.6);
   border: 1px solid @selected;
   border-radius: 24px;
@@ -108,4 +108,3 @@
 .notification.normal progress {
   background-color: @selected;
 }
-

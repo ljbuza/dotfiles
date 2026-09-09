@@ -1,0 +1,61 @@
+# Base and source control
+base-devel
+git
+
+# Hyprland + DankMaterialShell
+dms-shell
+dms-shell-hyprland
+hyprland
+quickshell
+uwsm
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# Desktop services
+networkmanager
+bluez
+bluez-utils
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+gnome-keyring
+mate-polkit
+libnotify
+
+# Hyprland utilities and DMS integrations
+brightnessctl
+playerctl
+wl-clipboard
+cliphist
+grim
+slurp
+hypridle
+hyprpicker
+hyprpaper
+remind
+imagemagick
+
+# Terminals, editor, and shell tools
+ghostty
+kitty
+alacritty
+neovim
+zsh
+starship
+fzf
+zoxide
+eza
+bat
+ripgrep
+fd
+lazygit
+jq
+rsync
+
+# Fonts used by the UI and terminal configuration
+noto-fonts
+ttf-jetbrains-mono-nerd
+ttf-fira-code
+ttf-nerd-fonts-symbols-mono

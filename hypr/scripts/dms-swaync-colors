@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+dms_colors=/home/larry/.local/state/DankMaterialShell/dms-colors.json
+swaync_colors=/home/larry/.config/swaync/colors.css
+temporary_colors=$(mktemp "${swaync_colors}.tmp.XXXXXX")
+trap 'rm -f "$temporary_colors"' EXIT
+
+jq -r '
+  .colors.dark
+  | to_entries[]
+  | "@define-color \(.key) \(.value);"
+' "$dms_colors" > "$temporary_colors"
+
+mv "$temporary_colors" "$swaync_colors"
+trap - EXIT
+/usr/bin/swaync-client --reload-css

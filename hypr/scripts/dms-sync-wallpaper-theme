@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir=/home/larry/.local/state/DankMaterialShell
+last_wallpaper_file="$state_dir/last-themed-wallpaper"
+current_wallpaper=$(/usr/bin/dms ipc call wallpaper get 2>/dev/null || true)
+
+[[ -f "$current_wallpaper" ]] || exit 0
+
+if [[ -f "$last_wallpaper_file" ]] && [[ "$(<"$last_wallpaper_file")" == "$current_wallpaper" ]]; then
+  exit 0
+fi
+
+/usr/bin/dms matugen generate \
+  --config-dir /home/larry/.config/DankMaterialShell \
+  --state-dir "$state_dir" \
+  --shell-dir /usr/share/quickshell/dms \
+  --kind image \
+  --value "$current_wallpaper" \
+  --mode dark \
+  --matugen-type scheme-tonal-spot \
+  --run-user-templates \
+  --contrast 0
+
+/usr/bin/bash /home/larry/.config/hypr/scripts/dms-swaync-colors
+printf '%s\n' "$current_wallpaper" > "$last_wallpaper_file"

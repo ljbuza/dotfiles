@@ -1,0 +1,105 @@
+{
+  "aiAssistant": {
+    "apiKey": "",
+    "apiKeyEnvVar": "",
+    "baseUrl": "http://192.168.7.222:11434",
+    "enabled": true,
+    "geminiWebSearch": false,
+    "maxTokens": 4096,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "providers": {
+      "anthropic": {
+        "apiKey": "",
+        "apiKeyEnvVar": "",
+        "baseUrl": "https://api.anthropic.com",
+        "maxTokens": 4096,
+        "model": "claude-sonnet-4-5",
+        "saveApiKey": "",
+        "temperature": 0.7,
+        "timeout": 30
+      },
+      "custom": {
+        "apiKey": "",
+        "apiKeyEnvVar": "",
+        "baseUrl": "https://api.openai.com",
+        "maxTokens": 4096,
+        "model": "gpt-5.2",
+        "saveApiKey": "",
+        "temperature": 0.7,
+        "timeout": 30
+      },
+      "gemini": {
+        "apiKey": "",
+        "apiKeyEnvVar": "",
+        "baseUrl": "https://generativelanguage.googleapis.com",
+        "geminiWebSearch": false,
+        "maxTokens": 4096,
+        "model": "gemini-3-flash-preview",
+        "saveApiKey": "",
+        "temperature": 0.7,
+        "timeout": 30
+      },
+      "inception": {
+        "apiKey": "",
+        "apiKeyEnvVar": "",
+        "baseUrl": "https://api.inceptionlabs.ai/v1",
+        "inceptionReasoningEffort": "medium",
+        "inceptionReasoningSummary": true,
+        "inceptionReasoningSummaryWait": false,
+        "maxTokens": 8192,
+        "model": "mercury-2",
+        "saveApiKey": "",
+        "temperature": 0.75,
+        "timeout": 30
+      },
+      "ollama": {
+        "apiKey": "",
+        "apiKeyEnvVar": "",
+        "baseUrl": "http://192.168.7.222:11434",
+        "maxTokens": 4096,
+        "model": "llama3.2:3b",
+        "saveApiKey": "",
+        "temperature": 0.7,
+        "timeout": 30
+      },
+      "openai": {
+        "apiKey": "",
+        "apiKeyEnvVar": "",
+        "baseUrl": "https://api.openai.com",
+        "maxTokens": 4096,
+        "model": "gpt-5.2",
+        "saveApiKey": "",
+        "temperature": 0.7,
+        "timeout": 30
+      }
+    },
+    "saveApiKey": "",
+    "temperature": 0.7,
+    "timeout": 30
+  },
+  "mpvpaperWallpaper": {
+    "allMonitors": true,
+    "allMonitorsPath": "",
+    "autoPause": true,
+    "enabled": false,
+    "generateStaticWallpaper": true,
+    "loopPlaylist": true,
+    "monitorPaths": {
+      "DP-1": ""
+    },
+    "noAudio": true,
+    "panscanEnabled": true,
+    "panscanValue": 1,
+    "screenshotDelay": 5
+  },
+  "worldClock": {
+    "enabled": true,
+    "timezones": [
+      {
+        "label": "Melbourne",
+        "timezone": "Australia/Melbourne"
+      }
+    ]
+  }
+}

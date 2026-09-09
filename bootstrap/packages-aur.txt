@@ -1,0 +1,4 @@
+# Optional visual parity packages. The bootstrap installs these only when yay
+# or paru is already available; otherwise it prints the manual command.
+walker
+elephant

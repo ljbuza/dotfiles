@@ -1,0 +1,16 @@
+# Copy this file to ~/.config/zsh/local.zsh and customize it per machine.
+# Never place credentials or API keys in the tracked repository.
+
+# Optional language/tool runtimes
+# [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+# export BUN_INSTALL="$HOME/.bun"
+# path=("$BUN_INSTALL/bin" $path)
+# export DENO_INSTALL="$HOME/.deno"
+# path=("$DENO_INSTALL/bin" $path)
+
+# Optional system integrations
+# [[ -r /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
+# [[ -r /etc/profile.d/google-cloud-cli.sh ]] && source /etc/profile.d/google-cloud-cli.sh
+
+# Work-specific project paths, mounts, hardware addresses, and secret-loader
+# commands also belong here.

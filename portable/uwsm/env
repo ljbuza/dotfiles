@@ -1,0 +1,6 @@
+# Environment imported into the graphical session by UWSM.
+source "$HOME/.config/uwsm/default"
+
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate bash)"
+fi

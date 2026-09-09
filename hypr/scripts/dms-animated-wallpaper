@@ -1,0 +1,493 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONFIG_DIR="${DMS_CONFIG_DIR:-$HOME/.config/DankMaterialShell}"
+SETTINGS_FILE="$CONFIG_DIR/plugin_settings.json"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/DankMaterialShell"
+CURRENT_FILE="$STATE_DIR/animated-wallpaper-path"
+STATIC_FILE="$STATE_DIR/static-wallpaper-path"
+SESSION_FILE="$STATE_DIR/session.json"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  dms-animated-wallpaper apply [path] [--restart]
+  dms-animated-wallpaper video [path] [--restart]
+  dms-animated-wallpaper static [path] [--restart]
+  dms-animated-wallpaper toggle [static-path] [--restart]
+  dms-animated-wallpaper set <path> [--restart]
+  dms-animated-wallpaper next [--restart]
+  dms-animated-wallpaper status
+  dms-animated-wallpaper current
+  dms-animated-wallpaper list
+
+Switches between DankMaterialShell static wallpapers and the mpvpaperWallpaper plugin.
+Supported animated formats: gif, mp4, webm, mkv, mov, m4v, avi, wmv, flv, ts.
+USAGE
+}
+
+is_supported() {
+  case "${1##*.}" in
+    gif|GIF|mp4|MP4|webm|WEBM|mkv|MKV|mov|MOV|m4v|M4V|avi|AVI|wmv|WMV|flv|FLV|ts|TS) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_supported_static() {
+  case "${1##*.}" in
+    jpg|JPG|jpeg|JPEG|png|PNG|bmp|BMP|gif|GIF|webp|WEBP|jxl|JXL|avif|AVIF|heif|HEIF|exr|EXR) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+video_explicitly_disabled() {
+  python3 - "$SETTINGS_FILE" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+if not path.exists():
+    raise SystemExit(1)
+
+try:
+    data = json.loads(path.read_text())
+except json.JSONDecodeError:
+    raise SystemExit(1)
+
+plugin = data.get("mpvpaperWallpaper")
+raise SystemExit(0 if isinstance(plugin, dict) and plugin.get("enabled") is False else 1)
+PY
+}
+
+video_enabled() {
+  python3 - "$SETTINGS_FILE" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+if not path.exists():
+    raise SystemExit(1)
+
+try:
+    data = json.loads(path.read_text())
+except json.JSONDecodeError:
+    raise SystemExit(1)
+
+raise SystemExit(0 if data.get("mpvpaperWallpaper", {}).get("enabled") is True else 1)
+PY
+}
+
+configured_path() {
+  python3 - "$SETTINGS_FILE" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+if not path.exists():
+    raise SystemExit(0)
+
+try:
+    data = json.loads(path.read_text())
+except json.JSONDecodeError:
+    raise SystemExit(0)
+
+print(data.get("mpvpaperWallpaper", {}).get("allMonitorsPath", ""))
+PY
+}
+
+wallpaper_dirs() {
+  printf '%s\0' \
+    "$HOME/Pictures/wallpapers" \
+    "$HOME/Pictures/Wallpapers/Animated" \
+    "$HOME/Pictures/Wallpapers"
+}
+
+list_static_wallpapers() {
+  local dir
+
+  while IFS= read -r -d '' dir; do
+    [[ -d "$dir" ]] || continue
+    find -L "$dir" -type f \( \
+      -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.bmp' \
+      -o -iname '*.gif' -o -iname '*.webp' -o -iname '*.jxl' -o -iname '*.avif' \
+      -o -iname '*.heif' -o -iname '*.exr' \
+    \) -print0
+  done < <(wallpaper_dirs) | sort -zu | tr '\0' '\n'
+}
+
+list_wallpapers() {
+  local dir
+
+  while IFS= read -r -d '' dir; do
+    [[ -d "$dir" ]] || continue
+    find -L "$dir" -type f \( \
+      -iname '*.gif' -o -iname '*.mp4' -o -iname '*.webm' -o -iname '*.mkv' \
+      -o -iname '*.mov' -o -iname '*.m4v' -o -iname '*.avi' -o -iname '*.wmv' \
+      -o -iname '*.flv' -o -iname '*.ts' \
+    \) -print0
+  done < <(wallpaper_dirs) | sort -zu | tr '\0' '\n'
+}
+
+first_wallpaper() {
+  list_wallpapers | head -n 1
+}
+
+first_static_wallpaper() {
+  list_static_wallpapers | head -n 1
+}
+
+next_wallpaper() {
+  local current="${1:-}"
+  mapfile -t wallpapers < <(list_wallpapers)
+
+  if [[ ${#wallpapers[@]} -eq 0 ]]; then
+    return 1
+  fi
+
+  for i in "${!wallpapers[@]}"; do
+    if [[ "${wallpapers[$i]}" == "$current" ]]; then
+      printf '%s\n' "${wallpapers[$(((i + 1) % ${#wallpapers[@]}))]}"
+      return 0
+    fi
+  done
+
+  printf '%s\n' "${wallpapers[0]}"
+}
+
+resolve_path() {
+  local candidate="$1"
+
+  if [[ -z "$candidate" ]]; then
+    echo "No animated wallpaper path was provided." >&2
+    return 1
+  fi
+
+  candidate="${candidate/#\~/$HOME}"
+
+  if [[ -d "$candidate" ]]; then
+    printf '%s\n' "$candidate"
+    return 0
+  fi
+
+  if [[ -f "$candidate" ]] && is_supported "$candidate"; then
+    printf '%s\n' "$candidate"
+    return 0
+  fi
+
+  echo "Unsupported or missing animated wallpaper: $candidate" >&2
+  return 1
+}
+
+resolve_static_path() {
+  local candidate="$1"
+
+  if [[ -z "$candidate" ]]; then
+    echo "No static wallpaper path was provided." >&2
+    return 1
+  fi
+
+  candidate="${candidate/#\~/$HOME}"
+
+  if [[ -f "$candidate" ]] && is_supported_static "$candidate"; then
+    printf '%s\n' "$candidate"
+    return 0
+  fi
+
+  echo "Unsupported or missing static wallpaper: $candidate" >&2
+  return 1
+}
+
+configured_static_path() {
+  python3 - "$STATIC_FILE" "$SESSION_FILE" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+static_path = Path(sys.argv[1])
+session_path = Path(sys.argv[2])
+
+if static_path.exists():
+    value = static_path.read_text().strip()
+    if value:
+        print(value)
+        raise SystemExit(0)
+
+if not session_path.exists():
+    raise SystemExit(0)
+
+try:
+    data = json.loads(session_path.read_text())
+except json.JSONDecodeError:
+    raise SystemExit(0)
+
+value = data.get("wallpaperPath", "")
+if value and "/mpvpaper_screenshots/" not in value:
+    print(value)
+PY
+}
+
+save_path() {
+  local path="$1"
+
+  mkdir -p "$CONFIG_DIR" "$STATE_DIR"
+
+  python3 - "$SETTINGS_FILE" "$path" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+settings_path = Path(sys.argv[1])
+wallpaper_path = sys.argv[2]
+
+if settings_path.exists() and settings_path.read_text().strip():
+    data = json.loads(settings_path.read_text())
+else:
+    data = {}
+
+plugin = dict(data.get("mpvpaperWallpaper", {}))
+plugin.update({
+    "enabled": True,
+    "allMonitors": True,
+    "allMonitorsPath": wallpaper_path,
+    "autoPause": True,
+    "noAudio": True,
+    "loopPlaylist": True,
+    "panscanEnabled": True,
+    "panscanValue": 1.0,
+    "generateStaticWallpaper": True,
+    "screenshotDelay": 5,
+})
+
+data["mpvpaperWallpaper"] = plugin
+settings_path.write_text(json.dumps(data, indent=2) + "\n")
+PY
+
+  printf '%s\n' "$path" >"$CURRENT_FILE"
+  command -v notify-send >/dev/null 2>&1 && notify-send "Animated wallpaper" "$(basename "$path")" -t 2000 || true
+}
+
+disable_video_settings() {
+  mkdir -p "$CONFIG_DIR"
+
+  python3 - "$SETTINGS_FILE" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+settings_path = Path(sys.argv[1])
+
+if settings_path.exists() and settings_path.read_text().strip():
+    data = json.loads(settings_path.read_text())
+else:
+    data = {}
+
+plugin = dict(data.get("mpvpaperWallpaper", {}))
+plugin["enabled"] = False
+data["mpvpaperWallpaper"] = plugin
+settings_path.write_text(json.dumps(data, indent=2) + "\n")
+PY
+}
+
+save_static_session() {
+  local path="$1"
+
+  mkdir -p "$STATE_DIR"
+
+  python3 - "$SESSION_FILE" "$path" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+session_path = Path(sys.argv[1])
+wallpaper_path = sys.argv[2]
+
+if session_path.exists() and session_path.read_text().strip():
+    data = json.loads(session_path.read_text())
+else:
+    data = {}
+
+data["wallpaperPath"] = wallpaper_path
+data["perMonitorWallpaper"] = False
+data["monitorWallpapers"] = {}
+data.setdefault("configVersion", 3)
+session_path.write_text(json.dumps(data, indent=2) + "\n")
+PY
+
+  printf '%s\n' "$path" >"$STATIC_FILE"
+}
+
+dms_ipc() {
+  command -v dms >/dev/null 2>&1 || return 1
+  dms ipc call "$@" >/dev/null 2>&1
+}
+
+set_static_wallpaper() {
+  local path="$1"
+
+  dms_ipc wallpaper clear || true
+  dms_ipc wallpaper set "$path" || true
+  save_static_session "$path"
+  refresh_dms_theme "$path"
+  command -v notify-send >/dev/null 2>&1 && notify-send "Static wallpaper" "$(basename "$path")" -t 2000 || true
+}
+
+disable_video() {
+  disable_video_settings
+  dms_ipc plugins disable mpvpaperWallpaper || true
+  pkill -f 'mpvpaper' >/dev/null 2>&1 || true
+}
+
+refresh_dms_theme() {
+  local fallback_path="${1:-}"
+
+  command -v dms >/dev/null 2>&1 || return 0
+
+  (
+    # The mpvpaper plugin needs time to create its static screenshot before
+    # DMS can extract colors from it.
+    sleep 6
+
+    local current_path
+    current_path="$(dms ipc call wallpaper get 2>/dev/null || true)"
+    if [[ -f "$current_path" ]] && is_supported_static "$current_path"; then
+      dms matugen queue --kind image --value "$current_path" --mode dark --matugen-type scheme-tonal-spot >/tmp/dms-wallpaper-theme.log 2>&1 || true
+    elif [[ -f "$fallback_path" ]] && is_supported_static "$fallback_path"; then
+      dms matugen queue --kind image --value "$fallback_path" --mode dark --matugen-type scheme-tonal-spot >/tmp/dms-wallpaper-theme.log 2>&1 || true
+    fi
+  ) &
+}
+
+enable_video() {
+  local source_path="${1:-}"
+
+  command -v dms >/dev/null 2>&1 || return 0
+  sleep 0.2
+  dms ipc call plugins reload mpvpaperWallpaper >/dev/null 2>&1 || true
+  refresh_dms_theme "$source_path"
+}
+
+restart_dms() {
+  nohup dms restart >/tmp/dms-animated-wallpaper-restart.log 2>&1 &
+}
+
+restart=false
+args=()
+for arg in "$@"; do
+  case "$arg" in
+    --restart) restart=true ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *) args+=("$arg") ;;
+  esac
+done
+
+cmd="${args[0]:-apply}"
+
+case "$cmd" in
+  apply)
+    candidate="${args[1]:-${DMS_ANIMATED_WALLPAPER_PATH:-}}"
+    if [[ -z "$candidate" ]] && video_explicitly_disabled; then
+      exit 0
+    fi
+    if [[ -z "$candidate" ]]; then
+      candidate="$(configured_path)"
+    fi
+    if [[ -z "$candidate" || ! -e "${candidate/#\~/$HOME}" ]]; then
+      candidate="$(first_wallpaper)"
+    fi
+    path="$(resolve_path "$candidate")"
+    save_path "$path"
+    enable_video "$path"
+    ;;
+  video|enable)
+    candidate="${args[1]:-${DMS_ANIMATED_WALLPAPER_PATH:-}}"
+    if [[ -z "$candidate" ]]; then
+      candidate="$(configured_path)"
+    fi
+    if [[ -z "$candidate" || ! -e "${candidate/#\~/$HOME}" ]]; then
+      candidate="$(first_wallpaper)"
+    fi
+    path="$(resolve_path "$candidate")"
+    save_path "$path"
+    enable_video "$path"
+    ;;
+  static|disable)
+    candidate="${args[1]:-}"
+    if [[ -z "$candidate" ]]; then
+      candidate="$(configured_static_path)"
+    fi
+    if [[ -z "$candidate" || ! -e "${candidate/#\~/$HOME}" ]]; then
+      candidate="$(first_static_wallpaper)"
+    fi
+    path="$(resolve_static_path "$candidate")"
+    disable_video
+    set_static_wallpaper "$path"
+    ;;
+  toggle)
+    if video_enabled; then
+      candidate="${args[1]:-}"
+      if [[ -z "$candidate" ]]; then
+        candidate="$(configured_static_path)"
+      fi
+      if [[ -z "$candidate" || ! -e "${candidate/#\~/$HOME}" ]]; then
+        candidate="$(first_static_wallpaper)"
+      fi
+      path="$(resolve_static_path "$candidate")"
+      disable_video
+      set_static_wallpaper "$path"
+    else
+      candidate="${DMS_ANIMATED_WALLPAPER_PATH:-}"
+      if [[ -z "$candidate" ]]; then
+        candidate="$(configured_path)"
+      fi
+      if [[ -z "$candidate" || ! -e "${candidate/#\~/$HOME}" ]]; then
+        candidate="$(first_wallpaper)"
+      fi
+      path="$(resolve_path "$candidate")"
+      save_path "$path"
+      enable_video "$path"
+    fi
+    ;;
+  set)
+    path="$(resolve_path "${args[1]:-}")"
+    save_path "$path"
+    enable_video "$path"
+    ;;
+  next)
+    current="$(configured_path)"
+    path="$(next_wallpaper "$current")"
+    save_path "$path"
+    enable_video "$path"
+    ;;
+  status)
+    if video_enabled; then
+      printf 'mode=video\n'
+    else
+      printf 'mode=static\n'
+    fi
+    printf 'video=%s\n' "$(configured_path)"
+    printf 'static=%s\n' "$(configured_static_path)"
+    exit 0
+    ;;
+  current)
+    configured_path
+    exit 0
+    ;;
+  list)
+    list_wallpapers
+    exit 0
+    ;;
+  *)
+    usage >&2
+    exit 2
+    ;;
+esac
+
+if [[ "$restart" == true ]]; then
+  restart_dms
+fi

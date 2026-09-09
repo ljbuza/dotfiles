@@ -14,7 +14,7 @@ return {
       
       opts.setup = setmetatable({}, {
         __index = function(_, server)
-          local result = prev_setup[server] or function(_, server_opts) return server_opts end
+          local prev = prev_setup[server]
           return function(server_name, server_opts)
             -- Ensure inlay hints are disabled for all servers
             server_opts.settings = server_opts.settings or {}
@@ -45,7 +45,12 @@ return {
               }
             end
             
-            return result(server_name, server_opts)
+            -- Call any previous server-specific setup, but always
+            -- return false/nil so LazyVim still configures the server.
+            if prev then
+              prev(server_name, server_opts)
+            end
+            return false
           end
         end
       })
