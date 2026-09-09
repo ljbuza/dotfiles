@@ -45,6 +45,20 @@ For the complete Hyprland + DMS desktop, use Ubuntu 26.04 LTS or newer. DMS's
 official Ubuntu packages currently require 26.04+, while the configuration-only
 part of the bootstrap can be used on older Ubuntu releases with `--link-only`.
 
+If the laptop is currently running Ubuntu 25.10, upgrade the operating system
+before running the bootstrap:
+
+```bash
+sudo apt update
+sudo apt dist-upgrade
+sudo do-release-upgrade
+sudo reboot
+```
+
+The release upgrader normally disables third-party repositories and PPAs. Leave
+them disabled during the upgrade. After booting Ubuntu 26.04, the bootstrap adds
+the DMS repositories again for the new Ubuntu release.
+
 Start from an installed, network-connected Ubuntu system and run:
 
 ```bash

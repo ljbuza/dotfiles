@@ -58,7 +58,9 @@ check_supported_ubuntu() {
     exit 1
   fi
   if ! dpkg --compare-versions "${VERSION_ID:-0}" ge 26.04; then
-    printf 'The full DMS desktop requires Ubuntu 26.04 LTS or newer. Use --link-only on %s.\n' "${VERSION_ID:-unknown}" >&2
+    printf 'The full DMS desktop requires Ubuntu 26.04 LTS or newer (found %s).\n' "${VERSION_ID:-unknown}" >&2
+    printf 'Upgrade first with: sudo apt update && sudo apt dist-upgrade && sudo do-release-upgrade\n' >&2
+    printf 'Use --link-only only if you intentionally want configuration without the desktop packages.\n' >&2
     exit 1
   fi
 }
